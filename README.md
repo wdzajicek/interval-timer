@@ -1,6 +1,8 @@
 # Minimal Interval Timer
 
-A ultra-clean, zero-dependency, mobile-optimized interval timer web application built with vanilla HTML5, modern CSS, and ES Modules. Designed for quick-glance readability, fluid pre-countdown color transitions, and zero background drift.
+> A ultra-clean, zero-dependency, mobile-optimized interval timer web application built with vanilla HTML5, modern CSS, and ES Modules. Designed for quick-glance readability, fluid pre-countdown color transitions, and zero background drift.
+
+GitHub Pages: <https://wdzajicek.github.io/interval-timer/>
 
 ## Features
 
