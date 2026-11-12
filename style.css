@@ -1,0 +1,329 @@
+:root {
+  color-scheme: light dark;
+
+  --bg: light-dark(#f8fafc, #090d16);
+  --surface: light-dark(#ffffff, #131a29);
+  --surface-hover: light-dark(#f1f5f9, #1e293b);
+  --text: light-dark(#0f172a, #f8fafc);
+  --text-muted: light-dark(#64748b, #94a3b8);
+  --border: light-dark(#cbd5e1, #293548);
+
+  --accent-pre: light-dark(#d97706, #fbbf24);
+  --accent-main: light-dark(#059669, #34d399);
+  --accent-primary: light-dark(#2563eb, #3b82f6);
+  --accent-primary-hover: light-dark(#1d4ed8, #60a5fa);
+  --accent-danger: light-dark(#dc2626, #ef4444);
+  --accent-danger-hover: light-dark(#b91c1c, #f87171);
+}
+
+/* Manual Theme Overrides */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+}
+
+.phase-badge {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--surface-hover);
+}
+
+/* Main Stage */
+.timer-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem 2.5rem;
+}
+
+.display-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.timer-display {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-size: clamp(4.5rem, 21vw, 13rem);
+  transition: color 0.15s ease;
+}
+
+/* Phase States */
+.display-wrapper[data-phase="pre"] .timer-display {
+  color: var(--accent-pre);
+  font-size: clamp(8rem, 38vw, 20rem);
+}
+
+.display-wrapper[data-phase="main"] .timer-display {
+  color: var(--accent-main);
+}
+
+/* Pre-timer number swell animation */
+@keyframes number-swell {
+  0% {
+    transform: scale(1.32);
+  }
+
+  100% {
+    transform: scale(0.96);
+  }
+}
+
+.swell-tick {
+  animation: number-swell 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swell-tick {
+    animation: none;
+  }
+}
+
+.loop-indicator {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Controls */
+.controls {
+  width: 100%;
+  max-width: 480px;
+}
+
+.primary-btn,
+.secondary-btn {
+  width: 100%;
+  min-height: 84px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.08s ease, background-color 0.15s ease;
+}
+
+.primary-btn:active,
+.secondary-btn:active {
+  transform: scale(0.98);
+}
+
+.primary-btn {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+.primary-btn:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+.secondary-btn {
+  background-color: var(--accent-danger);
+  color: #ffffff;
+}
+
+.secondary-btn:hover {
+  background-color: var(--accent-danger-hover);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Settings Dialog / Drawer */
+.settings-dialog {
+  width: min(100%, 460px);
+  max-width: 100%;
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.settings-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 600px) {
+  .settings-dialog {
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+  }
+}
+
+.settings-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.setting-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setting-group legend {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.duration-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.radio-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.radio-card:has(input:checked) {
+  border-color: var(--accent-primary);
+  background: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+}
+
+.radio-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.save-btn {
+  min-height: 56px;
+  font-size: 1.125rem;
+  margin-top: 0.5rem;
+}

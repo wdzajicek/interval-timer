@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Interval Timer</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="sr-only">Interval Timer</h1>
+    <span id="phase-badge" class="phase-badge" aria-live="polite">Ready</span>
+    
+    <button 
+      type="button" 
+      id="open-settings-btn" 
+      class="icon-btn" 
+      aria-label="Open timer settings"
+      aria-haspopup="dialog"
+      aria-controls="settings-dialog"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <main class="timer-stage">
+    <div id="display-wrapper" class="display-wrapper" data-phase="idle">
+      <div id="timer-display" class="timer-display" role="timer" aria-off="true">05.00</div>
+      <div id="loop-indicator" class="loop-indicator" hidden>Loop Mode Active</div>
+    </div>
+
+    <div class="controls">
+      <button type="button" id="start-btn" class="primary-btn">Start</button>
+      <button type="button" id="stop-btn" class="secondary-btn" hidden>Stop</button>
+    </div>
+  </main>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
+    <form method="dialog" id="settings-form" class="settings-content">
+      <div class="settings-header">
+        <h2 id="settings-title">Settings</h2>
+        <button type="button" id="close-settings-btn" class="icon-btn" aria-label="Close settings">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <fieldset class="setting-group">
+        <legend>Pre-Timer Countdown (Seconds)</legend>
+        <label class="input-field">
+          <span class="sr-only">Pre-timer seconds</span>
+          <input type="number" id="pre-seconds" name="preSeconds" min="0" max="3600" step="1" required>
+        </label>
+      </fieldset>
+
+      <fieldset class="setting-group">
+        <legend>Main Timer Duration</legend>
+        <div class="duration-grid">
+          <label class="input-field">
+            <span>Hours</span>
+            <input type="number" id="main-hours" name="mainHours" min="0" max="23" step="1" required>
+          </label>
+          <label class="input-field">
+            <span>Minutes</span>
+            <input type="number" id="main-minutes" name="mainMinutes" min="0" max="59" step="1" required>
+          </label>
+          <label class="input-field">
+            <span>Seconds</span>
+            <input type="number" id="main-seconds" name="mainSeconds" min="0" max="59" step="1" required>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="setting-group">
+        <legend>Playback Mode</legend>
+        <div class="radio-group">
+          <label class="radio-card">
+            <input type="radio" name="mode" value="single" checked>
+            <span>Single Run</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="mode" value="loop">
+            <span>Continuous Loop</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="setting-group">
+        <legend>Color Theme</legend>
+        <label class="input-field">
+          <span class="sr-only">Select color theme</span>
+          <select id="theme-select" name="theme">
+            <option value="system">System Default</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <button type="submit" class="primary-btn save-btn">Done</button>
+    </form>
+  </dialog>
+</body>
+</html>

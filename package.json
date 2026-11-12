@@ -1,0 +1,15 @@
+{
+  "name": "interval-timer",
+  "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "author": {
+    "name": "Wesley Zajicek",
+    "url": "https://github.com/wdzajicek"
+  },
+  "type": "module",
+  "description": "Minimal pre-countdown interval timer",
+  "scripts": {
+    "dev": "npx serve ."
+  }
+}
