@@ -85,8 +85,34 @@ function getPreDurationMs() {
 }
 
 /**
+ * Color Gradient Interpolation (Red -> Yellow -> Green) for Pre-Timer
+ * progress ranges from 0.0 (start of pre-timer) to 1.0 (end of pre-timer)
+ */
+function interpolateRgb(c1, c2, factor) {
+  const r = Math.round(c1[0] + factor * (c2[0] - c1[0]));
+  const g = Math.round(c1[1] + factor * (c2[1] - c1[1]));
+  const b = Math.round(c1[2] + factor * (c2[2] - c1[2]));
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function getPreTimerColor(progress) {
+  // Color stops: 0.0 = Red, 0.5 = Yellow, 1.0 = Green
+  const red = [239, 68, 68];
+  const yellow = [234, 179, 8];
+  const green = [34, 197, 94];
+
+  if (progress <= 0.5) {
+    // First half: Red to Yellow
+    return interpolateRgb(red, yellow, progress * 2);
+  } else {
+    // Second half: Yellow to Green
+    return interpolateRgb(yellow, green, (progress - 0.5) * 2);
+  }
+}
+
+/**
  * Formats milliseconds into:
- * - SS.cc (when under 1 minute, showing centiseconds for crisp readability)
+ * - SS.cc (when under 1 minute)
  * - MM:SS.cc (when under 1 hour)
  * - H:MM:SS.d (when 1 hour or over)
  */
@@ -112,7 +138,7 @@ function formatMainTime(ms) {
   return `${pad2(seconds)}.${pad2(centiseconds)}`;
 }
 
-// Screen Wake Lock (prevents mobile screen dimming during active countdown)
+// Screen Wake Lock
 async function requestWakeLock() {
   if ('wakeLock' in navigator) {
     try {
@@ -137,8 +163,7 @@ async function releaseWakeLock() {
 // Animation Trigger for Pre-Timer
 function triggerSwellAnimation() {
   timerDisplay.classList.remove('swell-tick');
-  // Force synchronous reflow so CSS animation restarts cleanly
-  void timerDisplay.offsetWidth;
+  void timerDisplay.offsetWidth; // Force reflow
   timerDisplay.classList.add('swell-tick');
 }
 
@@ -175,6 +200,7 @@ function enterMainPhase(durationMs) {
   state = 'main';
   phaseEndTime = performance.now() + durationMs;
   lastPreWholeSecond = null;
+  timerDisplay.style.color = ''; // Reset inline color to use CSS rules
   timerDisplay.classList.remove('swell-tick');
   displayWrapper.dataset.phase = 'main';
   phaseBadge.textContent = settings.mode === 'loop' ? 'Running (Loop)' : 'Running';
@@ -187,6 +213,7 @@ function stopTimer() {
   }
   state = 'idle';
   lastPreWholeSecond = null;
+  timerDisplay.style.color = '';
   timerDisplay.classList.remove('swell-tick');
   releaseWakeLock();
 
@@ -200,6 +227,7 @@ function renderIdleDisplay() {
   displayWrapper.dataset.phase = 'idle';
   phaseBadge.textContent = 'Ready';
   loopIndicator.hidden = settings.mode !== 'loop';
+  timerDisplay.style.color = '';
   timerDisplay.textContent = formatMainTime(getMainDurationMs());
 }
 
@@ -207,6 +235,11 @@ function tick(now) {
   const remaining = phaseEndTime - now;
 
   if (state === 'pre') {
+    const totalPreMs = getPreDurationMs();
+    const elapsed = totalPreMs - remaining;
+    const progress = Math.max(0, Math.min(1, elapsed / totalPreMs));
+    timerDisplay.style.color = getPreTimerColor(progress);
+
     if (remaining <= 0) {
       const mainMs = getMainDurationMs();
       if (mainMs > 0) {
@@ -273,14 +306,12 @@ closeSettingsBtn.addEventListener('click', () => {
   settingsDialog.close();
 });
 
-// Close dialog when clicking on the backdrop
 settingsDialog.addEventListener('click', (e) => {
   if (e.target === settingsDialog) {
     settingsDialog.close();
   }
 });
 
-// Live preview theme changes while inside the modal
 themeSelect.addEventListener('change', (e) => {
   applyTheme(e.target.value);
 });

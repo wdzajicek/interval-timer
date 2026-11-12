@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  src: url('./assets/fonts/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
 :root {
   color-scheme: light dark;
 
@@ -8,7 +17,6 @@
   --text-muted: light-dark(#64748b, #94a3b8);
   --border: light-dark(#cbd5e1, #293548);
 
-  --accent-pre: light-dark(#d97706, #fbbf24);
   --accent-main: light-dark(#059669, #34d399);
   --accent-primary: light-dark(#2563eb, #3b82f6);
   --accent-primary-hover: light-dark(#1d4ed8, #60a5fa);
@@ -16,7 +24,6 @@
   --accent-danger-hover: light-dark(#b91c1c, #f87171);
 }
 
-/* Manual Theme Overrides */
 :root[data-theme="light"] {
   color-scheme: light;
 }
@@ -38,7 +45,7 @@ body {
   grid-template-rows: auto 1fr;
   background-color: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
@@ -113,16 +120,14 @@ body {
 
 .timer-display {
   font-variant-numeric: tabular-nums;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1;
   letter-spacing: -0.03em;
   font-size: clamp(4.5rem, 21vw, 13rem);
-  transition: color 0.15s ease;
+  transition: color 0.05s linear;
 }
 
-/* Phase States */
 .display-wrapper[data-phase="pre"] .timer-display {
-  color: var(--accent-pre);
   font-size: clamp(8rem, 38vw, 20rem);
 }
 
@@ -130,7 +135,6 @@ body {
   color: var(--accent-main);
 }
 
-/* Pre-timer number swell animation */
 @keyframes number-swell {
   0% {
     transform: scale(1.32);
@@ -171,7 +175,7 @@ body {
   border: none;
   border-radius: 20px;
   font-size: 1.75rem;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: transform 0.08s ease, background-color 0.15s ease;
