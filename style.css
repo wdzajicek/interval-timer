@@ -118,17 +118,23 @@ body {
   text-align: center;
 }
 
+/* Default / Seconds-Only Main Timer (Giant 30vw size) */
 .timer-display {
   font-variant-numeric: tabular-nums;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.03em;
-  font-size: clamp(4.5rem, 21vw, 13rem);
+  font-size: clamp(6rem, 30vw, 20rem);
   transition: color 0.05s linear;
 }
 
+/* When Minutes or Hours are present, revert to original clamp to prevent overflow */
+.display-wrapper.has-minutes-or-hours .timer-display {
+  font-size: clamp(4.5rem, 21vw, 13rem);
+}
+
 .display-wrapper[data-phase="pre"] .timer-display {
-  font-size: clamp(8rem, 38vw, 20rem);
+  font-size: clamp(9.5rem, 44vw, 24rem);
 }
 
 .display-wrapper[data-phase="main"] .timer-display {
